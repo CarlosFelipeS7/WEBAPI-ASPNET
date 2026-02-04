@@ -1,3 +1,6 @@
+using APICatalogo.Context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+string sqlServerConnection = builder.Configuration.GetConnectionString("DefaultConnection"); //pegando a string de conexão do arquivo appsettings.json
+
+builder.Services.AddDbContext<AppDbContext>(options => //adicionando o contexto do banco de dados ao contêiner de serviços
+    options.UseSqlServer(sqlServerConnection));
+
 
 var app = builder.Build();
 
